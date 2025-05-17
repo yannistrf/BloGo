@@ -2,7 +2,9 @@ package main
 
 import (
 	"blogo/app"
+	"blogo/app/handlers"
 	"blogo/app/repositories"
+	"blogo/app/services"
 	"os"
 
 	"github.com/glebarez/sqlite"
@@ -19,10 +21,12 @@ func main() {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	userRepo := repositories.NewUserRepo(db)
-	userRepo.DeleteByID(3)
+	// userRepo := repositories.NewUserRepo(db)
+	postRepo := repositories.NewPostRepo(db)
+	postService := services.NewPostService(postRepo)
+	postController := handlers.NewPostController(postService)
 
 	server := gin.Default()
-	app.RoutesInit(server)
+	app.RoutesInit(server, postController)
 	server.Run(":8081")
 }
