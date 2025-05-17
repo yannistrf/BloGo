@@ -21,12 +21,15 @@ func main() {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	// userRepo := repositories.NewUserRepo(db)
+	userRepo := repositories.NewUserRepo(db)
+	userService := services.NewUserService(userRepo)
+	userController := handlers.NewUserController(userService)
+
 	postRepo := repositories.NewPostRepo(db)
 	postService := services.NewPostService(postRepo)
 	postController := handlers.NewPostController(postService)
 
 	server := gin.Default()
-	app.RoutesInit(server, postController)
+	app.RoutesInit(server, userController, postController)
 	server.Run(":8081")
 }

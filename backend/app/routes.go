@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RoutesInit(server *gin.Engine, postController handlers.PostController) {
+func RoutesInit(server *gin.Engine, userController handlers.UserController, postController handlers.PostController) {
 	server.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"health": "good"})
 	})
@@ -28,6 +28,25 @@ func RoutesInit(server *gin.Engine, postController handlers.PostController) {
 
 		post_routes.DELETE("/:id", func(ctx *gin.Context) {
 			postController.DeleteByID(ctx)
+		})
+	}
+
+	user_routes := server.Group("/user")
+	{
+		user_routes.POST("/add", func(ctx *gin.Context) {
+			userController.Add(ctx)
+		})
+
+		user_routes.GET("/:id", func(ctx *gin.Context) {
+			userController.FindByID(ctx)
+		})
+
+		user_routes.GET("/all", func(ctx *gin.Context) {
+			userController.FindAll(ctx)
+		})
+
+		user_routes.DELETE("/:id", func(ctx *gin.Context) {
+			userController.DeleteByID(ctx)
 		})
 	}
 }
