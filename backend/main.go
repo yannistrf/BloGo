@@ -8,6 +8,7 @@ import (
 	"blogo/app/services"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 
@@ -34,7 +35,14 @@ func main() {
 
 	authController := handlers.NewAuthController(userService)
 
-	server := gin.Default()
+	server := gin.New()
+	server.Use(gin.Logger(), gin.Recovery())
+	server.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:8000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
+		AllowCredentials: true,
+	}))
 	app.RoutesInit(server, userController, postController, authController)
-	server.Run(":8081")
+	server.Run("127.0.0.1:8081")
 }

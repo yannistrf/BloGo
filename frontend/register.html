@@ -14,7 +14,7 @@
   <div class="container d-flex justify-content-center mt-5">
     <div class="card register-container shadow p-4">
       <h2 class="text-center mb-4">Create Your <span class="text-primary">BloGo</span> Account</h2>
-      <form action="/register" method="POST">
+      <form id="registerForm">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <input type="text" class="form-control" id="username" name="username" required />
@@ -38,6 +38,8 @@
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
   ></script>
+  <script type="module" src="js/register.js"></script>
+
 
 </body>
 </html>

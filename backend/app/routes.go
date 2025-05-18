@@ -60,7 +60,7 @@ func RoutesInit(server *gin.Engine,
 
 	auth_routes := server.Group("/auth")
 	{
-		auth_routes.GET("/login", func(ctx *gin.Context) {
+		auth_routes.POST("/login", func(ctx *gin.Context) {
 			authController.Login(ctx)
 		})
 
