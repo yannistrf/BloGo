@@ -17,3 +17,8 @@ export async function register(username, password) {
   });
   return res.ok;
 }
+
+export async function getPosts() {
+    const res = await fetch(`${API_BASE}/post/all`);
+    return res.json()
+}
