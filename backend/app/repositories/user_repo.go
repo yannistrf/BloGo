@@ -9,6 +9,7 @@ import (
 type UserRepo interface {
 	Add(*models.User) error
 	FindByID(uint) *models.User
+	FindByUsername(string) *models.User
 	FindAll() *[]models.User
 	DeleteByID(uint)
 	FindPostsByID(uint) *[]models.Post
@@ -46,4 +47,10 @@ func (repo *userRepo) FindPostsByID(id uint) *[]models.Post {
 	var posts []models.Post
 	repo.db.Where(&models.Post{UserID: id}).Find(&posts)
 	return &posts
+}
+
+func (repo *userRepo) FindByUsername(username string) *models.User {
+	var user models.User
+	repo.db.Where(&models.User{Username: username}).Find(&user)
+	return &user
 }

@@ -7,7 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RoutesInit(server *gin.Engine, userController handlers.UserController, postController handlers.PostController) {
+func RoutesInit(server *gin.Engine,
+	userController handlers.UserController,
+	postController handlers.PostController,
+	authController handlers.AuthController) {
+
 	server.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"health": "good"})
 	})
@@ -51,6 +55,17 @@ func RoutesInit(server *gin.Engine, userController handlers.UserController, post
 
 		user_routes.GET("/:id/posts", func(ctx *gin.Context) {
 			userController.FindPostsByID(ctx)
+		})
+	}
+
+	auth_routes := server.Group("/auth")
+	{
+		auth_routes.GET("/login", func(ctx *gin.Context) {
+			authController.Login(ctx)
+		})
+
+		auth_routes.POST("/register", func(ctx *gin.Context) {
+			authController.Register(ctx)
 		})
 	}
 }

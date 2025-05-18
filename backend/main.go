@@ -32,7 +32,9 @@ func main() {
 	postService := services.NewPostService(postRepo)
 	postController := handlers.NewPostController(postService)
 
+	authController := handlers.NewAuthController(userService)
+
 	server := gin.Default()
-	app.RoutesInit(server, userController, postController)
+	app.RoutesInit(server, userController, postController, authController)
 	server.Run(":8081")
 }

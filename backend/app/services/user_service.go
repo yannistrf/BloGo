@@ -8,6 +8,7 @@ import (
 type UserService interface {
 	Add(*models.User) error
 	FindByID(uint) *models.User
+	FindByUsername(string) *models.User
 	FindAll() *[]models.User
 	DeleteByID(uint)
 	FindPostsByID(uint) *[]models.Post
@@ -39,4 +40,8 @@ func (service *userService) DeleteByID(id uint) {
 
 func (service *userService) FindPostsByID(id uint) *[]models.Post {
 	return service.repo.FindPostsByID(id)
+}
+
+func (service *userService) FindByUsername(username string) *models.User {
+	return service.repo.FindByUsername(username)
 }
