@@ -32,7 +32,11 @@ func (controller *postController) Add(ctx *gin.Context) {
 		return
 	}
 
-	controller.service.Add(&new_post)
+	err = controller.service.Add(&new_post)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 }
 
 func (controller *postController) FindByID(ctx *gin.Context) {

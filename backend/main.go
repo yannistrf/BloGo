@@ -3,6 +3,7 @@ package main
 import (
 	"blogo/app"
 	"blogo/app/handlers"
+	"blogo/app/models"
 	"blogo/app/repositories"
 	"blogo/app/services"
 	"os"
@@ -20,6 +21,8 @@ func main() {
 	}
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+	db.Exec("PRAGMA foreign_keys = ON") // for sqlite
+	db.AutoMigrate(models.User{}, models.Post{})
 
 	userRepo := repositories.NewUserRepo(db)
 	userService := services.NewUserService(userRepo)

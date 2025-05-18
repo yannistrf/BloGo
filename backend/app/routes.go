@@ -48,5 +48,9 @@ func RoutesInit(server *gin.Engine, userController handlers.UserController, post
 		user_routes.DELETE("/:id", func(ctx *gin.Context) {
 			userController.DeleteByID(ctx)
 		})
+
+		user_routes.GET("/:id/posts", func(ctx *gin.Context) {
+			userController.FindPostsByID(ctx)
+		})
 	}
 }

@@ -7,7 +7,7 @@ import (
 )
 
 type PostRepo interface {
-	Add(*models.Post)
+	Add(*models.Post) error
 	FindByID(uint) *models.Post
 	FindAll() *[]models.Post
 	DeleteByID(uint)
@@ -18,12 +18,11 @@ type postRepo struct {
 }
 
 func NewPostRepo(db *gorm.DB) PostRepo {
-	db.AutoMigrate(models.Post{})
 	return &postRepo{db: db}
 }
 
-func (repo *postRepo) Add(post *models.Post) {
-	repo.db.Create(post)
+func (repo *postRepo) Add(post *models.Post) error {
+	return repo.db.Create(post).Error
 }
 
 func (repo *postRepo) FindByID(id uint) *models.Post {

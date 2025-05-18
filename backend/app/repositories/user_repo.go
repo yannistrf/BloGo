@@ -7,10 +7,11 @@ import (
 )
 
 type UserRepo interface {
-	Add(*models.User)
+	Add(*models.User) error
 	FindByID(uint) *models.User
 	FindAll() *[]models.User
 	DeleteByID(uint)
+	FindPostsByID(uint) *[]models.Post
 }
 
 type userRepo struct {
@@ -18,12 +19,11 @@ type userRepo struct {
 }
 
 func NewUserRepo(db *gorm.DB) UserRepo {
-	db.AutoMigrate(models.User{})
 	return &userRepo{db: db}
 }
 
-func (repo *userRepo) Add(user *models.User) {
-	repo.db.Create(user)
+func (repo *userRepo) Add(user *models.User) error {
+	return repo.db.Create(user).Error
 }
 
 func (repo *userRepo) FindByID(id uint) *models.User {
@@ -40,4 +40,10 @@ func (repo *userRepo) FindAll() *[]models.User {
 
 func (repo *userRepo) DeleteByID(id uint) {
 	repo.db.Delete(&models.User{}, id)
+}
+
+func (repo *userRepo) FindPostsByID(id uint) *[]models.Post {
+	var posts []models.Post
+	repo.db.Where(&models.Post{UserID: id}).Find(&posts)
+	return &posts
 }

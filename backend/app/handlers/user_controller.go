@@ -14,6 +14,7 @@ type UserController interface {
 	FindByID(ctx *gin.Context)
 	FindAll(ctx *gin.Context)
 	DeleteByID(ctx *gin.Context)
+	FindPostsByID(ctx *gin.Context)
 }
 
 type userController struct {
@@ -32,7 +33,11 @@ func (controller *userController) Add(ctx *gin.Context) {
 		return
 	}
 
-	controller.service.Add(&new_user)
+	err = controller.service.Add(&new_user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 }
 
 func (controller *userController) FindByID(ctx *gin.Context) {
@@ -63,4 +68,15 @@ func (controller *userController) DeleteByID(ctx *gin.Context) {
 		return
 	}
 	controller.service.DeleteByID(uint(id))
+}
+
+func (controller *userController) FindPostsByID(ctx *gin.Context) {
+	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
+	}
+
+	posts := controller.service.FindPostsByID(uint(id))
+	ctx.JSON(http.StatusOK, posts)
 }

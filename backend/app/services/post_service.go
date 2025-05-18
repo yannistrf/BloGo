@@ -6,7 +6,7 @@ import (
 )
 
 type PostService interface {
-	Add(*models.Post)
+	Add(*models.Post) error
 	FindByID(uint) *models.Post
 	FindAll() *[]models.Post
 	DeleteByID(uint)
@@ -20,8 +20,8 @@ func NewPostService(repo repositories.PostRepo) PostService {
 	return &postService{repo: repo}
 }
 
-func (service *postService) Add(post *models.Post) {
-	service.repo.Add(post)
+func (service *postService) Add(post *models.Post) error {
+	return service.repo.Add(post)
 }
 
 func (service *postService) FindByID(id uint) *models.Post {
