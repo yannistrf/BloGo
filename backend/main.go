@@ -6,6 +6,8 @@ import (
 	"blogo/app/models"
 	"blogo/app/repositories"
 	"blogo/app/services"
+	"blogo/app/utils"
+	"errors"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -16,6 +18,13 @@ import (
 )
 
 func main() {
+	var db_exists bool
+	if _, err := os.Stat("blogo.db"); errors.Is(err, os.ErrNotExist) {
+		db_exists = false
+	} else {
+		db_exists = true
+	}
+
 	db, err := gorm.Open(sqlite.Open("blogo.db"), &gorm.Config{})
 	if err != nil {
 		os.Exit(1)
@@ -34,6 +43,10 @@ func main() {
 	postController := handlers.NewPostController(postService)
 
 	authController := handlers.NewAuthController(userService)
+
+	if !db_exists {
+		utils.InsertTestData(userRepo, postRepo)
+	}
 
 	server := gin.New()
 	server.Use(gin.Logger(), gin.Recovery())

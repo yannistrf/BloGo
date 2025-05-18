@@ -11,7 +11,7 @@ getPosts().then(posts => {
             <div class="card-body">
                 <h5 class="card-title">${post.title}</h5>
                 <p class="text-muted position-absolute top-0 end-0 m-3">Written by: Johcscevevn<\p>
-                <p class="card-text text-truncate">${post.content}</p>
+                <p class="card-text" style="white-space: pre-wrap;">${post.content}</p>
             </div>
         </div>
         `;
