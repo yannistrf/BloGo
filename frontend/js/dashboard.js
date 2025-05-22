@@ -1,4 +1,5 @@
 import { getPosts } from "./api.js";
+import { doLogout } from "./auth.js";
 
 getPosts().then(posts => {
     const container = document.getElementById('postsContainer');
@@ -18,3 +19,8 @@ getPosts().then(posts => {
         container.appendChild(postElement);
     });
 })
+
+window.logout = function() {
+    doLogout()
+    window.location.replace("/login.html")
+}

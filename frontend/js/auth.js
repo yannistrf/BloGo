@@ -10,6 +10,6 @@ export function isLoggedIn() {
     return !!getToken();
 }
   
-export function logout() {
+export function doLogout() {
     localStorage.removeItem("token");
 }

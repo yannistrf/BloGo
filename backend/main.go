@@ -51,7 +51,7 @@ func main() {
 	server := gin.New()
 	server.Use(gin.Logger(), gin.Recovery())
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8000"},
+		AllowOrigins:     []string{"*"}, // TODO: read from env
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
 		AllowCredentials: true,
