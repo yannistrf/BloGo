@@ -1,4 +1,4 @@
-import { getPosts, getMyPosts } from "./api.js";
+import { getPosts, getMyPosts, createPost } from "./api.js";
 import { doLogout, getToken } from "./auth.js";
 
 const token = getToken();
@@ -8,7 +8,6 @@ if (!token) {
 
 getPosts(token).then(posts => {
     const container = document.getElementById('postsContainer');
-    // container.innerHTML = '';
     posts.reverse().forEach(post => {
         const postElement = document.createElement('div');
         postElement.innerHTML = `
@@ -22,6 +21,21 @@ getPosts(token).then(posts => {
         `;
         container.appendChild(postElement);
     });
+})
+
+document.getElementById("newPostForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const postTitle = document.getElementById("postTitle").value;
+    const postContent = document.getElementById("postContent").value;
+
+    const ok = await createPost(token, postTitle, postContent);
+    if (ok) {
+        document.getElementById("postTitle").value = "";
+        document.getElementById("postContent").value = "";
+        location.reload();
+    } else {
+        alert("New post creation failed");
+    }
 })
 
 document.getElementById("logoutBtn").addEventListener("click", () => {
@@ -39,9 +53,7 @@ document.getElementById("myPostsBtn").addEventListener("click", () => {
     }
 
     getMyPosts(token).then(posts => {
-        console.log(posts)
         const container = document.getElementById('postsContainer');
-        // container.innerHTML = '';
         posts.reverse().forEach(post => {
             const postElement = document.createElement('div');
             postElement.innerHTML = `

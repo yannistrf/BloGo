@@ -35,3 +35,15 @@ export async function getMyPosts(token) {
   });
   return res.json();
 }
+
+export async function createPost(token, title, content) {
+  const res = await fetch(`${API_BASE}/post/add`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, content }),
+  });
+  return res.ok;
+}

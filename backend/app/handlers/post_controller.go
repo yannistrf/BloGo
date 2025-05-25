@@ -26,6 +26,7 @@ func NewPostController(service services.PostService) PostController {
 
 func (controller *postController) Add(ctx *gin.Context) {
 	var new_post models.Post
+	new_post.UserID = ctx.GetUint("user_id")
 	err := ctx.ShouldBindJSON(&new_post)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
