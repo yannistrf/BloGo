@@ -22,6 +22,9 @@ func NewPostRepo(db *gorm.DB) PostRepo {
 }
 
 func (repo *postRepo) Add(post *models.Post) error {
+	var user models.User
+	repo.db.First(&user, post.UserID)
+	post.Author = user.Username
 	return repo.db.Create(post).Error
 }
 
