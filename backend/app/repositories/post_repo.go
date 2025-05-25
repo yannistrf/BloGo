@@ -11,6 +11,7 @@ type PostRepo interface {
 	FindByID(uint) *models.Post
 	FindAll() *[]models.Post
 	DeleteByID(uint)
+	StringSearch(string) *[]models.Post
 }
 
 type postRepo struct {
@@ -42,4 +43,11 @@ func (repo *postRepo) FindAll() *[]models.Post {
 
 func (repo *postRepo) DeleteByID(id uint) {
 	repo.db.Delete(&models.Post{}, id)
+}
+
+func (repo *postRepo) StringSearch(query string) *[]models.Post {
+	query = "%" + query + "%" // add the wildcards
+	var posts []models.Post
+	repo.db.Where("title LIKE ? OR content LIKE ?", query, query).Find(&posts)
+	return &posts
 }

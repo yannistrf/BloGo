@@ -34,6 +34,10 @@ func RoutesInit(server *gin.Engine,
 		post_routes.DELETE("/:id", func(ctx *gin.Context) {
 			postController.DeleteByID(ctx)
 		})
+
+		post_routes.GET("/search", func(ctx *gin.Context) {
+			postController.StringSearch(ctx)
+		})
 	}
 
 	user_routes := server.Group("/user", middlewares.AuthorizeJWT)

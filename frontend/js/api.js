@@ -47,3 +47,12 @@ export async function createPost(token, title, content) {
   });
   return res.ok;
 }
+
+export async function getQueryPosts(token, query) {
+  const res = await fetch(`${API_BASE}/post/search?query=${query}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.json();
+}

@@ -1,4 +1,4 @@
-import { getPosts, getMyPosts, createPost } from "./api.js";
+import { getPosts, getMyPosts, createPost, getQueryPosts } from "./api.js";
 import { doLogout, getToken } from "./auth.js";
 
 const token = getToken();
@@ -40,6 +40,24 @@ document.getElementById("myPostsBtn").addEventListener("click", () => {
     }
 
     getMyPosts(token).then(posts => {
+        createPostElements(posts);
+    });
+})
+
+document.getElementById("queryForm").addEventListener("submit", async (e) => {
+    e.preventDefault()
+    const query = document.getElementById("query").value
+    if (query === "") {
+        return
+    }
+    document.getElementById("header").textContent = `Search results for: ${query}`
+
+    const container = document.getElementById('postsContainer');
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+
+    getQueryPosts(token, query).then(posts => {
         createPostElements(posts);
     });
 })

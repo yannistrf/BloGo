@@ -14,6 +14,7 @@ type PostController interface {
 	FindByID(ctx *gin.Context)
 	FindAll(ctx *gin.Context)
 	DeleteByID(ctx *gin.Context)
+	StringSearch(ctx *gin.Context)
 }
 
 type postController struct {
@@ -68,4 +69,9 @@ func (controller *postController) DeleteByID(ctx *gin.Context) {
 		return
 	}
 	controller.service.DeleteByID(uint(id))
+}
+
+func (controller *postController) StringSearch(ctx *gin.Context) {
+	posts := controller.service.StringSearch(ctx.Query("query"))
+	ctx.JSON(http.StatusOK, posts)
 }
