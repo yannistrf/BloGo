@@ -7,20 +7,7 @@ if (!token) {
 }
 
 getPosts(token).then(posts => {
-    const container = document.getElementById('postsContainer');
-    posts.reverse().forEach(post => {
-        const postElement = document.createElement('div');
-        postElement.innerHTML = `
-        <div class="card shadow-sm" style="max-width: 800px;min-width: 500px;">
-            <div class="card-body">
-                <h5 class="card-title">${post.title}</h5>
-                <p class="text-muted position-absolute top-0 end-0 m-3">Written by: Johcscevevn<\p>
-                <p class="card-text" style="white-space: pre-wrap;">${post.content}</p>
-            </div>
-        </div>
-        `;
-        container.appendChild(postElement);
-    });
+    createPostElements(posts);
 })
 
 document.getElementById("newPostForm").addEventListener("submit", async (e) => {
@@ -53,20 +40,29 @@ document.getElementById("myPostsBtn").addEventListener("click", () => {
     }
 
     getMyPosts(token).then(posts => {
-        const container = document.getElementById('postsContainer');
-        posts.reverse().forEach(post => {
-            const postElement = document.createElement('div');
-            postElement.innerHTML = `
-            <div class="card shadow-sm" style="max-width: 800px;min-width: 500px;">
-                <div class="card-body">
-                    <h5 class="card-title">${post.title}</h5>
-                    <p class="text-muted position-absolute top-0 end-0 m-3">Written by: Johcscevevn<\p>
-                    <p class="card-text" style="white-space: pre-wrap;">${post.content}</p>
-                </div>
-            </div>
-            `;
-            container.appendChild(postElement);
-        });
-    })
+        createPostElements(posts);
+    });
 })
+
+function createPostElements(posts) {
+    const container = document.getElementById('postsContainer');
+    posts.reverse().forEach(post => {
+        const date = new Date(post.created_at)
+        const dateString = date.toLocaleDateString();
+        const timeString = date.toLocaleTimeString();
+
+        const postElement = document.createElement('div');
+        postElement.innerHTML = `
+        <div class="card shadow-sm" style="max-width: 800px;min-width: 500px;">
+            <div class="card-body">
+                <h5 class="card-title">${post.title}</h5>
+                <p class="text-muted position-absolute top-0 end-0 m-3">Written by: Johcscevevn</p>
+                <p class="card-text" style="white-space: pre-wrap;">${post.content}</p>
+                <p class="text-muted mb-0">Created at: ${dateString} (${timeString})</p>
+            </div>
+        </div>
+        `;
+        container.appendChild(postElement);
+    });
+}
 
