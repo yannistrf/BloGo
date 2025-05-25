@@ -17,9 +17,10 @@ func AuthorizeJWT(ctx *gin.Context) {
 
 	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 
-	_, err := utils.ValidateJWT(tokenString)
+	claims, err := utils.ValidateJWT(tokenString)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
+	ctx.Set("user_id", claims.ID)
 }

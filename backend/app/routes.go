@@ -2,6 +2,7 @@ package app
 
 import (
 	"blogo/app/handlers"
+	"blogo/app/middlewares"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,7 @@ func RoutesInit(server *gin.Engine,
 		ctx.JSON(http.StatusOK, gin.H{"health": "good"})
 	})
 
-	post_routes := server.Group("/post")
+	post_routes := server.Group("/post", middlewares.AuthorizeJWT)
 	{
 		post_routes.POST("/add", func(ctx *gin.Context) {
 			postController.Add(ctx)
@@ -35,7 +36,7 @@ func RoutesInit(server *gin.Engine,
 		})
 	}
 
-	user_routes := server.Group("/user")
+	user_routes := server.Group("/user", middlewares.AuthorizeJWT)
 	{
 		user_routes.POST("/add", func(ctx *gin.Context) {
 			userController.Add(ctx)
@@ -53,7 +54,7 @@ func RoutesInit(server *gin.Engine,
 			userController.DeleteByID(ctx)
 		})
 
-		user_routes.GET("/:id/posts", func(ctx *gin.Context) {
+		user_routes.GET("/me", func(ctx *gin.Context) {
 			userController.FindPostsByID(ctx)
 		})
 	}

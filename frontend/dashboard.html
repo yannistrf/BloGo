@@ -11,15 +11,16 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand text-white mx-5" href="#">BloGo</a>
+    <a class="navbar-brand text-white mx-5" href="/dashboard.html">BloGo</a>
     <div class="ms-auto">
       <button class="btn btn-success me-2" onclick="">New Post</button>
-      <button class="btn btn-secondary me-2" onclick="">My Posts</button>
-      <button class="btn btn-danger me-2" onclick="logout()">Logout</button>
+      <button id="myPostsBtn" class="btn btn-secondary me-2">My Posts</button>
+      <button id="logoutBtn" class="btn btn-danger me-2">Logout</button>
     </div>
   </nav>
 
   <div class="container mt-4">
+    <h4 id="header" style="text-align: center;" class="pb-4"> Welcome to BloGo! </h4>
     <div id="postsContainer" class="d-flex flex-column align-items-center gap-3">
       <!-- Posts will be inserted here -->
     </div>

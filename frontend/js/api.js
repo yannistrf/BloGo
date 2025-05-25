@@ -18,7 +18,20 @@ export async function register(username, password) {
   return res.ok;
 }
 
-export async function getPosts() {
-    const res = await fetch(`${API_BASE}/post/all`);
-    return res.json()
+export async function getPosts(token) {
+  const res = await fetch(`${API_BASE}/post/all`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.json();
+}
+
+export async function getMyPosts(token) {
+  const res = await fetch(`${API_BASE}/user/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.json();
 }

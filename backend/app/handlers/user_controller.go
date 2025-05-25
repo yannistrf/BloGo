@@ -71,12 +71,6 @@ func (controller *userController) DeleteByID(ctx *gin.Context) {
 }
 
 func (controller *userController) FindPostsByID(ctx *gin.Context) {
-	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
-		return
-	}
-
-	posts := controller.service.FindPostsByID(uint(id))
+	posts := controller.service.FindPostsByID(ctx.GetUint("user_id"))
 	ctx.JSON(http.StatusOK, posts)
 }
