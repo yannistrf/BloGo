@@ -71,6 +71,11 @@ func (controller *userController) DeleteByID(ctx *gin.Context) {
 }
 
 func (controller *userController) FindPostsByID(ctx *gin.Context) {
-	posts := controller.service.FindPostsByID(ctx.GetUint("user_id"))
+	page, err := strconv.Atoi(ctx.Query("page"))
+	if page == 0 || err != nil {
+		page = 1
+	}
+
+	posts := controller.service.FindPostsByID(ctx.GetUint("user_id"), page)
 	ctx.JSON(http.StatusOK, posts)
 }

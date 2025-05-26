@@ -8,9 +8,9 @@ import (
 type PostService interface {
 	Add(*models.Post) error
 	FindByID(uint) *models.Post
-	FindAll() *[]models.Post
+	FindAll(int) *[]models.Post
 	DeleteByID(uint)
-	StringSearch(string) *[]models.Post
+	StringSearch(string, int) *[]models.Post
 }
 
 type postService struct {
@@ -29,14 +29,14 @@ func (service *postService) FindByID(id uint) *models.Post {
 	return service.repo.FindByID(id)
 }
 
-func (service *postService) FindAll() *[]models.Post {
-	return service.repo.FindAll()
+func (service *postService) FindAll(page int) *[]models.Post {
+	return service.repo.FindAll(page)
 }
 
 func (service *postService) DeleteByID(id uint) {
 	service.repo.DeleteByID(id)
 }
 
-func (service *postService) StringSearch(query string) *[]models.Post {
-	return service.repo.StringSearch(query)
+func (service *postService) StringSearch(query string, page int) *[]models.Post {
+	return service.repo.StringSearch(query, page)
 }

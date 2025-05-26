@@ -18,8 +18,8 @@ export async function register(username, password) {
   return res.ok;
 }
 
-export async function getPosts(token) {
-  const res = await fetch(`${API_BASE}/post/all`, {
+export async function getPosts(token, page) {
+  const res = await fetch(`${API_BASE}/post/all?page=${page}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -27,8 +27,8 @@ export async function getPosts(token) {
   return res.json();
 }
 
-export async function getMyPosts(token) {
-  const res = await fetch(`${API_BASE}/user/me`, {
+export async function getMyPosts(token, page) {
+  const res = await fetch(`${API_BASE}/user/me?page=${page}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -48,8 +48,8 @@ export async function createPost(token, title, content) {
   return res.ok;
 }
 
-export async function getQueryPosts(token, query) {
-  const res = await fetch(`${API_BASE}/post/search?query=${query}`, {
+export async function getQueryPosts(token, page, query) {
+  const res = await fetch(`${API_BASE}/post/search?query=${query}&page=${page}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

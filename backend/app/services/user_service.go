@@ -11,7 +11,7 @@ type UserService interface {
 	FindByUsername(string) *models.User
 	FindAll() *[]models.User
 	DeleteByID(uint)
-	FindPostsByID(uint) *[]models.Post
+	FindPostsByID(uint, int) *[]models.Post
 }
 
 type userService struct {
@@ -38,8 +38,8 @@ func (service *userService) DeleteByID(id uint) {
 	service.repo.DeleteByID(id)
 }
 
-func (service *userService) FindPostsByID(id uint) *[]models.Post {
-	return service.repo.FindPostsByID(id)
+func (service *userService) FindPostsByID(id uint, page int) *[]models.Post {
+	return service.repo.FindPostsByID(id, page)
 }
 
 func (service *userService) FindByUsername(username string) *models.User {

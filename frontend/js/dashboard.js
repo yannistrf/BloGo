@@ -1,12 +1,15 @@
 import { getPosts, getMyPosts, createPost, getQueryPosts } from "./api.js";
 import { doLogout, getToken } from "./auth.js";
 
+let current_page = 1;
+let getPostsFn = getPosts;
+
 const token = getToken();
 if (!token) {
   window.location.href = "/login.html";
 }
 
-getPosts(token).then(posts => {
+getPosts(token, current_page).then(posts => {
     createPostElements(posts);
 })
 
@@ -39,14 +42,59 @@ document.getElementById("myPostsBtn").addEventListener("click", () => {
         container.removeChild(container.firstChild);
     }
 
-    getMyPosts(token).then(posts => {
+    getPostsFn = getMyPosts;
+    current_page = 1;
+    document.getElementById("currentPage").textContent = `Page ${current_page}`;
+
+
+    getMyPosts(token, current_page).then(posts => {
         createPostElements(posts);
     });
 })
 
+document.getElementById("nextBtn").addEventListener("click", () => {
+    
+    const container = document.getElementById('postsContainer');
+    
+    const query = document.getElementById("query").value;   // if it exists
+
+    getPostsFn(token, current_page + 1, query).then(posts => {
+        if (posts.length == 0) {
+            alert("There aren't any more posts")
+            return;
+        }
+        
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+        createPostElements(posts);
+        current_page++;
+        document.getElementById("currentPage").textContent = `Page ${current_page}`;
+    });
+})
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+    
+    if (current_page === 1)
+        return;
+
+    const query = document.getElementById("query").value; // if it exists
+
+    getPostsFn(token, current_page - 1, query).then(posts => {
+        const container = document.getElementById('postsContainer');
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+        createPostElements(posts);
+        current_page--;
+        document.getElementById("currentPage").textContent = `Page ${current_page}`
+    });
+
+})
+
 document.getElementById("queryForm").addEventListener("submit", async (e) => {
     e.preventDefault()
-    const query = document.getElementById("query").value
+    const query = document.getElementById("query").value;
     if (query === "") {
         return
     }
@@ -57,14 +105,18 @@ document.getElementById("queryForm").addEventListener("submit", async (e) => {
         container.removeChild(container.firstChild);
     }
 
-    getQueryPosts(token, query).then(posts => {
+    getPostsFn = getQueryPosts;
+    current_page = 1;
+    document.getElementById("currentPage").textContent = `Page ${current_page}`;
+
+    getQueryPosts(token, current_page, query).then(posts => {
         createPostElements(posts);
     });
 })
 
 function createPostElements(posts) {
     const container = document.getElementById('postsContainer');
-    posts.reverse().forEach(post => {
+    posts.forEach(post => {
         const date = new Date(post.created_at)
         const dateString = date.toLocaleDateString();
         const timeString = date.toLocaleTimeString();

@@ -58,7 +58,11 @@ func (controller *postController) FindByID(ctx *gin.Context) {
 }
 
 func (controller *postController) FindAll(ctx *gin.Context) {
-	posts := controller.service.FindAll()
+	page, err := strconv.Atoi(ctx.Query("page"))
+	if page == 0 || err != nil {
+		page = 1
+	}
+	posts := controller.service.FindAll(page)
 	ctx.JSON(http.StatusOK, posts)
 }
 
@@ -72,6 +76,11 @@ func (controller *postController) DeleteByID(ctx *gin.Context) {
 }
 
 func (controller *postController) StringSearch(ctx *gin.Context) {
-	posts := controller.service.StringSearch(ctx.Query("query"))
+	page, err := strconv.Atoi(ctx.Query("page"))
+	if page == 0 || err != nil {
+		page = 1
+	}
+
+	posts := controller.service.StringSearch(ctx.Query("query"), page)
 	ctx.JSON(http.StatusOK, posts)
 }

@@ -12,7 +12,7 @@ type UserRepo interface {
 	FindByUsername(string) *models.User
 	FindAll() *[]models.User
 	DeleteByID(uint)
-	FindPostsByID(uint) *[]models.Post
+	FindPostsByID(uint, int) *[]models.Post
 }
 
 type userRepo struct {
@@ -43,9 +43,11 @@ func (repo *userRepo) DeleteByID(id uint) {
 	repo.db.Delete(&models.User{}, id)
 }
 
-func (repo *userRepo) FindPostsByID(id uint) *[]models.Post {
+func (repo *userRepo) FindPostsByID(id uint, page int) *[]models.Post {
 	var posts []models.Post
-	repo.db.Where(&models.Post{UserID: id}).Find(&posts)
+	offset := (page - 1) * PAGE_SIZE
+	repo.db.Where(&models.Post{UserID: id}).
+		Order("created_at DESC").Offset(offset).Limit(PAGE_SIZE).Find(&posts)
 	return &posts
 }
 
