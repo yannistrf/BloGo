@@ -14,6 +14,7 @@ type PostRepo interface {
 	FindAll(int) *[]models.Post
 	DeleteByID(uint)
 	StringSearch(string, int) *[]models.Post
+	AddComment(*models.Comment)
 }
 
 type postRepo struct {
@@ -33,7 +34,7 @@ func (repo *postRepo) Add(post *models.Post) error {
 
 func (repo *postRepo) FindByID(id uint) *models.Post {
 	var post models.Post
-	repo.db.First(&post, id)
+	repo.db.Preload("Comments").First(&post, id)
 	return &post
 }
 
@@ -55,4 +56,8 @@ func (repo *postRepo) StringSearch(query string, page int) *[]models.Post {
 	repo.db.Where("title LIKE ? OR content LIKE ?", query, query).
 		Order("created_at DESC").Offset(offset).Limit(PAGE_SIZE).Find(&posts)
 	return &posts
+}
+
+func (repo *postRepo) AddComment(comment *models.Comment) {
+	repo.db.Create(comment)
 }

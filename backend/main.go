@@ -32,7 +32,7 @@ func main() {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 	db.Exec("PRAGMA foreign_keys = ON") // for sqlite
-	db.AutoMigrate(models.User{}, models.Post{})
+	db.AutoMigrate(models.User{}, models.Post{}, models.Comment{})
 
 	userRepo := repositories.NewUserRepo(db)
 	userService := services.NewUserService(userRepo)

@@ -11,6 +11,7 @@ type PostService interface {
 	FindAll(int) *[]models.Post
 	DeleteByID(uint)
 	StringSearch(string, int) *[]models.Post
+	AddComment(*models.Comment)
 }
 
 type postService struct {
@@ -39,4 +40,8 @@ func (service *postService) DeleteByID(id uint) {
 
 func (service *postService) StringSearch(query string, page int) *[]models.Post {
 	return service.repo.StringSearch(query, page)
+}
+
+func (service *postService) AddComment(comment *models.Comment) {
+	service.repo.AddComment(comment)
 }

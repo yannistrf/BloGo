@@ -15,6 +15,7 @@ type PostController interface {
 	FindAll(ctx *gin.Context)
 	DeleteByID(ctx *gin.Context)
 	StringSearch(ctx *gin.Context)
+	AddComment(ctx *gin.Context)
 }
 
 type postController struct {
@@ -83,4 +84,24 @@ func (controller *postController) StringSearch(ctx *gin.Context) {
 
 	posts := controller.service.StringSearch(ctx.Query("query"), page)
 	ctx.JSON(http.StatusOK, posts)
+}
+
+func (controller *postController) AddComment(ctx *gin.Context) {
+	post_id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var new_comment models.Comment
+	new_comment.UserID = ctx.GetUint("user_id")
+	new_comment.PostID = uint(post_id)
+
+	err = ctx.ShouldBindJSON(&new_comment)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	controller.service.AddComment(&new_comment)
 }

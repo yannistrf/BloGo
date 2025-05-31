@@ -38,6 +38,10 @@ func RoutesInit(server *gin.Engine,
 		post_routes.GET("/search", func(ctx *gin.Context) {
 			postController.StringSearch(ctx)
 		})
+
+		post_routes.POST("/:id/comment", func(ctx *gin.Context) {
+			postController.AddComment(ctx)
+		})
 	}
 
 	user_routes := server.Group("/user", middlewares.AuthorizeJWT)
