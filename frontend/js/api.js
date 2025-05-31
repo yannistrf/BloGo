@@ -65,3 +65,15 @@ export async function getPost(token, post_id) {
   });
   return res.json();
 }
+
+export async function publishComment(token, post_id, commentContent) {
+  const res = await fetch(`${API_BASE}/post/${post_id}/comment`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify( {"content": commentContent} ),
+  });
+  return res.ok;
+} 

@@ -59,5 +59,8 @@ func (repo *postRepo) StringSearch(query string, page int) *[]models.Post {
 }
 
 func (repo *postRepo) AddComment(comment *models.Comment) {
+	var user models.User
+	repo.db.First(&user, comment.UserID)
+	comment.Author = user.Username
 	repo.db.Create(comment)
 }

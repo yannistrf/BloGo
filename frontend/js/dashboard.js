@@ -126,7 +126,7 @@ function createPostElements(posts) {
         <a href="/post.html?post_id=${post.id}" style="text-decoration: none;">
             <div class="card shadow-sm" style="max-width: 800px;">
                 <div class="card-body">
-                    <div class="container d-flex justify-content-between flex-wrap">
+                    <div class="d-flex justify-content-between flex-wrap">
                         <h5 class="card-title">${post.title}</h5>
                         <p class="text-muted">Written by: ${post.author}</p>
                     </div>

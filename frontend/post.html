@@ -34,6 +34,23 @@
     </div>
   </div>
 
+  <div class="container mb-5">
+    <div class="card shadow-sm">
+      <form id="commentForm" class="container">
+        <div class="form-group mt-2">
+            <textarea type="text" class="form-control" id="commentContent" name="commentContent" rows="3" placeholder="Share your thoughts on the post..."></textarea>
+        </div>
+        <div class="my-3" style="text-align: center;">
+          <button type="submit" class="btn btn-success">Comment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="container" id="commentsContainer">
+    <!-- Comments will be inserted here -->
+  </div>
+
   <script type="module" src="js/post.js"></script>
 
 </body>
