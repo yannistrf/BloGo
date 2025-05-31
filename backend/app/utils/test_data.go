@@ -25,6 +25,7 @@ func InsertTestData(userRepo repositories.UserRepo, postRepo repositories.PostRe
 	}
 
 	for _, user := range users {
+		user.Password = HashPassword(user.Password)
 		userRepo.Add(&user)
 	}
 

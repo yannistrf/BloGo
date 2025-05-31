@@ -32,7 +32,7 @@ func (controller *authController) Login(ctx *gin.Context) {
 	}
 
 	result_user := controller.userService.FindByUsername(user.Username)
-	if result_user.ID == 0 || result_user.Password != user.Password {
+	if result_user.ID == 0 || !utils.VerifyPassword(user.Password, result_user.Password) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad credentials"})
 		return
 	}
@@ -52,6 +52,8 @@ func (controller *authController) Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	user.Password = utils.HashPassword(user.Password)
 
 	err = controller.userService.Add(&user)
 	if err != nil {
