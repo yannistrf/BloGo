@@ -123,16 +123,18 @@ function createPostElements(posts) {
 
         const postElement = document.createElement('div');
         postElement.innerHTML = `
-        <div class="card shadow-sm" style="max-width: 800px;">
-            <div class="card-body">
-                <div class="container d-flex justify-content-between flex-wrap">
-                    <h5 class="card-title">${post.title}</h5>
-                    <p class="text-muted">Written by: ${post.author}</p>
+        <a href="/post.html?post_id=${post.id}" style="text-decoration: none;">
+            <div class="card shadow-sm" style="max-width: 800px;">
+                <div class="card-body">
+                    <div class="container d-flex justify-content-between flex-wrap">
+                        <h5 class="card-title">${post.title}</h5>
+                        <p class="text-muted">Written by: ${post.author}</p>
+                    </div>
+                    <p class="card-text" style="white-space: pre-wrap;">${post.content}</p>
+                    <p class="text-muted mb-0">Created at: ${dateString} (${timeString})</p>
                 </div>
-                <p class="card-text" style="white-space: pre-wrap;">${post.content}</p>
-                <p class="text-muted mb-0">Created at: ${dateString} (${timeString})</p>
             </div>
-        </div>
+        </a>
         `;
         container.appendChild(postElement);
     });

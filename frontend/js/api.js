@@ -56,3 +56,12 @@ export async function getQueryPosts(token, page, query) {
   });
   return res.json();
 }
+
+export async function getPost(token, post_id) {
+  const res = await fetch(`${API_BASE}/post/${post_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.json();
+}
