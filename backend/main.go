@@ -15,9 +15,16 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+
+	err := godotenv.Load(".env")
+	if err != nil {
+		gin.DefaultErrorWriter.Write([]byte("Couldn't load .env, using default password\n"))
+	}
+
 	var db_exists bool
 	if _, err := os.Stat("blogo.db"); errors.Is(err, os.ErrNotExist) {
 		db_exists = false
@@ -57,5 +64,5 @@ func main() {
 		AllowCredentials: true,
 	}))
 	app.RoutesInit(server, userController, postController, authController)
-	server.Run("127.0.0.1:8081")
+	server.Run(os.Getenv("ADDR") + ":" + os.Getenv("PORT"))
 }
