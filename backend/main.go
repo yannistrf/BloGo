@@ -58,11 +58,11 @@ func main() {
 	server := gin.New()
 	server.Use(gin.Logger(), gin.Recovery())
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"}, // TODO: read from env
+		AllowOrigins:     []string{"http://" + os.Getenv("FRONT_ADDR") + ":" + os.Getenv("FRONT_PORT")},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
 		AllowCredentials: true,
 	}))
 	app.RoutesInit(server, userController, postController, authController)
-	server.Run(os.Getenv("ADDR") + ":" + os.Getenv("PORT"))
+	server.Run(os.Getenv("BACK_ADDR") + ":" + os.Getenv("BACK_PORT"))
 }
